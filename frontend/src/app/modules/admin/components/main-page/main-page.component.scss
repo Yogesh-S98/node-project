@@ -1,0 +1,16 @@
+::ng-deep {
+    .p-datatable {
+        padding: 20px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    .p-button.p-button-danger:not(:disabled):focus {
+        box-shadow: none;
+    }
+    .p-button.p-button-danger.p-button-text:not(:disabled):active {
+        background: transparent;
+    }
+}
+.card {
+    padding: 20px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

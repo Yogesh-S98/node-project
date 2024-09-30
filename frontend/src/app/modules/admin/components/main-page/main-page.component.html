@@ -1,0 +1,71 @@
+<div>
+    <form class="card m-2" [formGroup]="userForm" (ngSubmit)="submitForm()">
+        <div class="col">
+            <input
+            pInputText
+            type="text"
+            style="margin: 10px;"
+            placeholder="Name"
+            formControlName="name"
+            />
+            <input
+                pInputText
+                type="email"
+                placeholder="Email"
+                style="margin: 10px;"
+                formControlName="email"
+            />
+            <p-password
+                type="password"
+                [feedback]="false"
+                [toggleMask]="true"
+                placeholder="Password"
+                formControlName="password"
+            ></p-password>
+            <p-dropdown
+                [options]="roles"
+                optionLabel="name"
+                class="p-2"
+                formControlName="role"
+                placeholder="Select role" />
+        </div>
+    <div class="col-3">
+    <p-button class="col" label="Cancel" [text]="true" severity="danger" (onClick)="cancel()"></p-button>
+    <p-button class="col" type="submit" [label]="label"></p-button>
+    </div>
+    </form>
+    <p-confirmDialog></p-confirmDialog>
+    <div *ngIf="list.length" class="col">
+        <p-table [value]="list" class="table">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Gmail</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-list let-i="rowIndex">
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{list.name}}</td>
+                    <td>{{list.email}}</td>
+                    <td>{{list.role}}</td>
+                    <td>
+                        <i
+                            class="pi pi-pencil cursor-pointer p-2"
+                            style="color:#2196F3"
+                            (click)="selectUser(list)">
+                        </i>
+                        <i
+                            class="pi pi-trash cursor-pointer"
+                            style="color: #f32121"
+                            (click)="deleteUser(list)"
+                        ></i>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
