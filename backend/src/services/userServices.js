@@ -1,6 +1,43 @@
 const pool = require('../config/db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
+const encryptionKey = '2c1c722cd37ec25908a5233037839a1cb8cfaa1a6eff4c7e5444bc1e339f512c';
+
+
+const login = async (users) => {
+    try {
+        const { email, password } = users;
+        const result = await pool.query(
+            'SELECT id, name, email, password, role FROM users WHERE email = $1',
+            [email]
+        );
+        if (result.rows.length === 0) {
+            throw new Error('User not found');
+        }
+        const user = result.rows[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            throw new Error('Invalid credentials');
+        }
+        const userDetails = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        };
+        const token = jwt.sign(userDetails, encryptionKey, { expiresIn: '24h' })
+        const resendUser = {
+            token,
+            user: userDetails
+        }
+        return resendUser;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+}
 
 
 const getUsers = async () => {
@@ -73,5 +110,6 @@ module.exports = {
     getUsers,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
 };

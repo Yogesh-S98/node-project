@@ -2,10 +2,21 @@ const { json } = require('express');
 const userService = require('../services/userServices');
 const { successResponse, errorResponse, createdResponse } = require('../utils/responseUtil');
 
+exports.loginUser = async (req, res) => {
+    try {
+        const user = await userService.login(req.body);
+        if (!user) {
+            return errorResponse(res, 'User not found');
+        }
+        return successResponse(res, 'Login Successfully', user);
+    } catch (error) {
+        return errorResponse(res, 'Error fetching users');
+    }
+}
+
 exports.getusers = async (req, res) => {
     try {
         const users = await userService.getUsers();
-        console.log('adfafa');
         const result = {
             users: users,
         }
